@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="en"> <!--無特定地區-->
 
-
 <head>
     <meta charset="UTF-8">
     <title>多益單字練習（分類版）</title>
-    <meta name="description" content="這是一個測驗單字的網頁，目前題庫只有旅遊單元，其他單元正在施工中～">
-    <link rel="icon" href="icon1.png">
 
     <style>
         body {
@@ -19,7 +16,7 @@
 
         h1 {
             font-size: 2em;
-            color: #283041;
+            color: #243f35;
             margin-bottom: 20px;
         }
 
@@ -75,8 +72,13 @@
             margin-top: 20px;
         }
 
-        button {
+        button{
             padding: 8px 16px;
+            margin: 5px auto;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: 1px solid #c0c2bf;
+            color: #414241; 
             margin: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -103,329 +105,37 @@
     <div id="wrongListBox"></div>
 
     <button id="nextBtn">下一題</button>
+    <button id="restartBtn" onclick="restartUnit()" style="display: none;">重新開始本單元</button>
     <br>
     <button id="checkWrongBtn">查看錯題</button>
-
     <br><br>
 
-
-
     <script>
-        const vocabulary = {  //題庫（分單元）
-            travel: [
-                {
-                    word: "itinerary",
-                    Chinese: "行程",
-                    definition: "(n.) a detailed plan or route of a journey",
-                    sentence: "The tour operator will arrange transport and plan your itinerary.",
-                    options: ["immigration", "itinerary", "transit", "halfway"]
-                },
-                {
-                    word: "accommodation",
-                    Chinese: "住處",
-                    definition: "(n.) a room, group of rooms, or building in which someone may live or stay",
-                    sentence: "You should book your accommodation early if you're traveling on a budget.",
-                    options: ["accommodation", "reimbursement", "concierge", "itinerary"]
-                },
-                {
-                    word: "amenities",
-                    Chinese: "娛樂設施",
-                    definition: "(n.) something that is intended to make life more pleasant or comfortable for the people in a town, hotel, or other place",
-                    sentence: "The council has some spare cash, which it proposes to spend on public amenities.",
-                    options: ["itinerant", "itinerary", "excursion", "amenities"]
-                },
-                {
-                    word: "excursion",
-                    Chinese: "短程旅行；遠足",
-                    definition: "(n.) a short journey usually made for pleasure, often by a group of people",
-                    sentence: "We went on a day excursion to the nearby island.",
-                    options: ["transit", "compartment", "embark", "excursion"]
-                },
-                {
-                    word: "itinerant",
-                    Chinese: "巡迴的；流動的",
-                    definition: "(a.) travelling from one place to another, usually to work for a short period",
-                    sentence: "The itinerant guide spoke several languages fluently.",
-                    options: ["itinerant", "detour", "incidental", "timetable"]
-                },
-                {
-                    word: "reimbursement",
-                    Chinese: "報銷",
-                    definition: "(n.) the act of paying back money to someone who has spent it for you or lost it because of you",
-                    sentence: "Employees can apply for reimbursement of travel expenses.",
-                    options: ["reimbursement", "resort", "amenities", "lodging"]
-                },
-                {
-                    word: "reimburse",
-                    Chinese: "補償",
-                    definition: "(v.) to pay back money to someone who has spent it for you or lost it because of you ",
-                    sentence: "The airline will reimburse me for the amount they had overcharged me.",
-                    options: ["reimburse", "fasten", "transit", "cruise"]
-                },
-                {
-                    word: "transit",
-                    Chinese: "轉機；運輸",
-                    definition: "(n.) the movement of goods or people from one place to another",
-                    sentence: "Passengers can wait in the transit lounge between flights. ",
-                    options: ["transit", "concierge", "detour", "freight"]
-                },
-                {
-                    word: "concierge",
-                    Chinese: "櫃台人員",
-                    definition: "(n.) someone who is employed in a hotel, private club, or similar place to help guests with anything they need",
-                    sentence: "You can ask the concierge to call a taxi for you. ",
-                    options: ["concierge", "detour", "itinerant", "escort"]
-                },
-                {
-                    word: "resort",
-                    Chinese: "渡假勝地",
-                    definition: "(n.) a place where many people go for rest, sport, or another stated purpose ",
-                    sentence: "There are many summer resorts in the mountains.",
-                    options: ["resort", "porter", "brochure", "itinerant"]
-                },
-                {
-                    word: "jet lag",
-                    Chinese: "時差造成的疲累",
-                    definition: "(n.) the feeling of tiredness and confusion that people experience after travelling by plane to a place where the time is different",
-                    sentence: "I couldn’t sleep well due to jet lag after the long flight.",
-                    options: ["jet lag", "layover", "claim tag", "excursion"]
-                },
-                {
-                    word: "embark",
-                    Chinese: "登機；登船",
-                    definition: "(v.) to go onto a ship, plane or car",
-                    sentence: "We will embark on our cruise at 5 p.m.",
-                    options: ["embark", "reimburse", "refund", "deck"]
-                },
-                {
-                    word: "immigration",
-                    Chinese: "移民；入境",
-                    definition: "(n.) the act of someone coming to live in a different country",
-                    sentence: "There are strict limits on immigration into the country.",
-                    options: ["immigration", "refund", "deck", "voyage"]
-                },
-                {
-                    word: "currency exchange",
-                    Chinese: "貨幣交換所",
-                    definition: "(n.) an office where you can change one money into another",
-                    sentence: "There are currency exchanges and ATMs in most big towns and cities.",
-                    options: ["currency exchange", "turbulence", "deluxe", "jet lag"]
-                },
-                {
-                    word: "red-eye flight",
-                    Chinese: "紅眼航班",
-                    definition: "(n.) a plane journey during the night, usually one that is over a long distance",
-                    sentence: "I took a red-eye flight to save on hotel costs.",
-                    options: ["terminal", "red-eye flight", "duty-free shop", "non-stop flight"]
-                },
-                {
-                    word: "detour",
-                    Chinese: "繞路",
-                    definition: "(n.) a different route, which may not be the shortest way, but can avoid something such as a traffic jam",
-                    sentence: "You'd be wise to make a detour to avoid the roadworks.",
-                    options: ["detour", "freight", "resort", "bypass"]
-                },
-                {
-                    word: "sightseeing",
-                    Chinese: "觀光",
-                    definition: "(n.) the activity of visiting interesting places, especially by people on holiday",
-                    sentence: "We had plenty of time to go sightseeing in Paris after the conference.",
-                    options: ["sightseeing", "transit", "fasten", "brochure"]
-                },
-                {
-                    word: "cruise",
-                    Chinese: "郵輪旅遊",
-                    definition: "(n.) a vacation spent on a ship that sails the ocean, usually one that is over a long distance",
-                    sentence: "He and his wife went on a cruise to the Bahamas.",
-                    options: ["cruise", "timetable", "compartment", "concierge"]
-                },
-                {
-                    word: "cruise",
-                    Chinese: "巡航",
-                    definition: "(v.) sail about in an area without a precise destination",
-                    sentence: "The coastguard cutter cruised along the coast looking for smugglers.",
-                    options: ["cruise", "escort", "resort", "fasten"]
-                },
-                {
-                    word: "incidental",
-                    Chinese: "附帶的",
-                    definition: "(a.) less important than the thing something is connected with or part of ",
-                    sentence: "When you check out of the hotel, they might charge you incidental fees in addition to the main bill.",
-                    options: ["incidental", "turbulence", "lodging", "deluxe"]
-                },
-                {
-                    word: "lodging",
-                    Chinese: "住宿",
-                    definition: "(n.) a temporary place to stay",
-                    sentence: "The price includes board and lodging.",
-                    options: ["lodging", "voyage", "escort", "freight"]
-                },
-                {
-                    word: "group rate",
-                    Chinese: "團體價",
-                    definition: "(n.) an economical price for a group of people",
-                    sentence: "The group rate is cost-effective only if we have eight or more people.",
-                    options: ["group rate", "time rate", "sightseeing", "hotel lobby"]
-                },
-                {
-                    word: "halfway",
-                    Chinese: "中途的",
-                    definition: "(a.) in the middle of something, or at a place that is equally far from two other places",
-                    sentence: "Tuvalu is made of nine small islands about halfway between Australia and Hawaii.",
-                    options: ["halfway", "voyage", "bag", "compartment"]
-                },
-                {
-                    word: "escort",
-                    Chinese: "護送",
-                    definition: "(n.) to go with a person or vehicle to make certain that he, she, or it leaves or arrives safely",
-                    sentence: "Jim got so drunk that the bouncers had to escort him out of the club.",
-                    options: ["escort", "resort", "deck", "accommodate"]
-                },
-                {
-                    word: "deck",
-                    Chinese: "甲板",
-                    definition: "(n.) a flat area for walking on, built across the space between the sides of a boat",
-                    sentence: "We spent the afternoon sitting on deck enjoying the view.",
-                    options: ["deck", "vacant", "escort", "timetable"]
-                },
-                {
-                    word: "bypass",
-                    Chinese: "越過",
-                    definition: "(v.) to ignore a rule or official authority",
-                    sentence: "I was able to bypass the airport because I was traveling with a VIP.",
-                    options: ["bypass", "voyage", "halfway", "escort"]
-                },
-                {
-                    word: "porter",
-                    Chinese: "搬運工",
-                    definition: "(n.) a person whose job is to carry things, especially travelers' bags at railway stations, airports, hotels etc.",
-                    sentence: "There aren't any porters, so we'll have to find a trolley for the luggage.",
-                    options: ["porter", "detour", "vacant", "bypass"]
-                },
-                {
-                    word: "turbulence",
-                    Chinese: "亂流",
-                    definition: "(n.) strong sudden movements within air or water",
-                    sentence: "The severe turbulence caused injuries to 5 flight attendants and 3 passengers.",
-                    options: ["turbulence", "expedition", "currency exchange", "halfway"]
-                },
-                {
-                    word: "fasten",
-                    Chinese: "繫上",
-                    definition: "(v.) to cause something to become firmly fixed together, or in position, or closed",
-                    sentence: "Passengers were told to fasten their seat belts before the plane made an emergency landing.",
-                    options: ["fasten", "compartment", "embark", "resort"]
-                },
-                {
-                    word: "compartment",
-                    Chinese: "包廂",
-                    definition: "(n.) one of the separate areas inside a vehicle, especially a train",
-                    sentence: "There were ten compartments in each car of the train.",
-                    options: ["compartment", "cruise", "expedition", "immigration"]
-                },
-                {
-                    word: "timetable",
-                    Chinese: "行程表",
-                    definition: "(n.) a detailed plan showing when events or activities will happen",
-                    sentence: "The heavy fog upset our timetable for the trip.",
-                    options: ["timetable", "reimbursement", "lodging", "excursion"]
-                },
-                {
-                    word: "refund",
-                    Chinese: "退款",
-                    definition: "(v.) to give someone their money back, especially because they are not satisfied with a product or service",
-                    sentence: "The customer asked the store to refund her money for the broken product.",
-                    options: ["refund", "reimbursement", "resort", "lodging"]
-                },
-                {
-                    word: "refund",
-                    Chinese: "退款",
-                    definition: "(n.) an amount of money that is given back to you, especially because you are not happy with a product or service",
-                    sentence: "I intend to return an item that you bought yesterday and ask for a refund.",
-                    options: ["refund", "excursion", "amenity", "bypass"]
-                },
-                {
-                    word: "brochure",
-                    Chinese: "小手冊",
-                    definition: "(n.) a type of small magazine that contains pictures and information on a product",
-                    sentence: "The picture of French countryside in the travel brochure tempted me to go on an excursion.",
-                    options: ["brochure", "sightseeing", "bypass", "porter"]
-                },
-                {
-                    word: "freight",
-                    Chinese: "貨物",
-                    definition: "(n.) goods that are carried from one place to another, by ship, aircraft, train, or truck, or the system of transporting these goods",
-                    sentence: "The ship carries both freight and passengers.",
-                    options: ["freight", "turbulence", "brochure", "transit"]
-                },
-                {
-                    word: "all-inclusive",
-                    Chinese: "全部包括的",
-                    definition: "(a.) including everything, especially including the cost of all services that are offered",
-                    sentence: "The travel agency may have an all-inclusive package.",
-                    options: ["all-inclusive", "vacant", "jet lag", "deluxe"]
-                },
-                {
-                    word: "deluxe",
-                    Chinese: "奢華的",
-                    definition: "(a.) very comfortable and of very high quality",
-                    sentence: "The deluxe suite also comes with a very nice bar.",
-                    options: ["deluxe", "incidental", "compartment", "itinerary"]
-                },
-                {
-                    word: "vacant",
-                    Chinese: "未被佔用的,空缺的",
-                    definition: "(a.) not filled or occupied; available to be used",
-                    sentence: "A vacant apartment in New York City is very difficult to find.",
-                    options: ["vacant", "deluxe", "itinerant", "escort"]
-                },
-                {
-                    word: "expedition",
-                    Chinese: "探索；遠征",
-                    definition: "(n.) an organized journey for a particular purpose",
-                    sentence: "Explorer Ernest Shackleton led his first expedition to Antarctica in 1908.",
-                    options: ["expedition", "amenities", "freight", "timetable"]
-                },
-                {
-                    word: "voyage",
-                    Chinese: "航程；航行",
-                    definition: "(n.) an act or instance of traveling",
-                    sentence: "The elderly couple went on a voyage around the world.",
-                    options: ["voyage", "brochure", "detour", "turbulence"]
-                },
-
-
-
-            ],
-            food: [
-                {
-                    word: "menu",
-                    definition: "a list of food items in a restaurant",
-                    sentence: "What's on the menu today?",
-                    options: ["menu", "receipt", "napkin", "dish"]
-                },
-                {
-                    word: "reservation",
-                    definition: "a person who serves food in a restaurant",
-                    sentence: "I've made a reservationat for the restaurant for 12 o'clock.",
-                    options: ["chef", "cashier", "reservation", "recommend"]
-                }
-            ]
-        };
+        const vocabulary = {}; // 全部題庫放這裡
+        async function loadVocabulary(unitName) {
+            try {
+                const response = await fetch(`題庫/${unitName}.json`);
+                //從總題庫中抓出某單元的檔案(fetch)
+                const data = await response.json();//把讀到的資料轉換成 JSON 格式              
+                vocabulary[unitName] = data;//成功得到這個單元的題庫資料！         
+            } catch (error) {
+                console.log("讀取題庫失敗，請確認檔案存在");
+                console.error(error);
+            }
+        }
 
         let currentIndex = 0;
         let currentSet = [];
-        let usedIndices = [];
         let wrongAnswers = []; // 記錄錯題
         let isWrongPractice = false;
 
-        function startCategory() {
+        async function startCategory() {
             const selected = document.getElementById("categorySelect").value;
             document.getElementById("nextBtn").style.display = "inline-block";
+            document.getElementById("restartBtn").style.display = "none";
             document.getElementById("checkWrongBtn").style.display = "inline-block";
-
             document.getElementById("wrongListBox").style.display = "none";  //隱藏錯題區域
-
+            isWrongPractice = false
 
             if (isWrongPractice) { //錯題模式
                 if (wrongAnswers.length === 0) {
@@ -433,26 +143,42 @@
                     document.getElementById("optionsBox").innerHTML = "";
                     return;
                 }
-
                 currentSet = wrongAnswers;
+
             } else {  //一般模式
-                if (!selected || !vocabulary[selected]) {
+                if (!selected) {
                     document.getElementById("questionBox").innerHTML = "請先選擇一個單元！";
                     document.getElementById("optionsBox").innerHTML = "";
                     return;
                 }
-
-                currentSet = vocabulary[selected];
+                if (!vocabulary[selected]) {
+                    await loadVocabulary(selected);
+                }
+                document.getElementById("restartBtn").style.display = "inline-block";
+                currentSet = shuffle([...vocabulary[selected]]);
+                //題目順序隨機
+                //題庫用一般的
             }
 
             currentIndex = 0;
-            usedIndices = []; //重設已出題的 index
             showQuestion();
         }
 
+        function shuffle(array) {  //用來打亂陣列的順序!
+            //從陣列的最後一個元素開始往前交換，就是打亂順序
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            //i 是從陣列最後一個元素開始，逐步往前移
+            //j 是從 0 到 i 之間隨機選的一個位置
+            return array;
+        }
+
         function showQuestion() {
-            if (!currentSet.length) return;
-            const q = currentSet[currentIndex];
+
+            if (!currentSet.length) return;  //沒有題目的話就跳掉
+            const q = currentSet[currentIndex];  //把題目存進q
             const blankSentence = q.sentence.replace(q.word, "______"); //例句單字挖空:blankSentence
 
             document.getElementById('questionBox').innerHTML = `
@@ -461,39 +187,40 @@
             <div id="sentenceBox">例句： <b>${blankSentence}</b></div><br>
             `; //<b>是粗體字
             const optionsBox = document.getElementById('optionsBox');
-            optionsBox.innerHTML = '';
+            optionsBox.innerHTML = ''; //清除上一題的選項
 
-            const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);  //把q.options裡的每一個元素複製出來放進一個新的陣列shuffledOptions，目的是不改動原本的資料，保持q.options原樣。
-            //打亂陣列順序
+            const shuffledOptions = shuffle([...q.options]);  //隨機排按鈕
 
             shuffledOptions.forEach(option => {
                 const btn = document.createElement('button');  //創造按鈕
                 btn.className = 'option-btn';
-                btn.textContent = option;
+                btn.textContent = option;  //把按鈕內容變成題庫中的option
                 btn.onclick = () => checkAnswer(option, q.word, btn, q.sentence);
-                optionsBox.appendChild(btn);
+                //按下按鈕的時候執行checkAnswer()，然後傳入q的題目
+                optionsBox.appendChild(btn);  //把按鈕加進網頁的選項區
             });
 
         }
 
-        function checkAnswer(selected, correct, btn) {
+        function checkAnswer(selected, correct, btn) {  //收到傳進來的q(題目)
             const q = currentSet[currentIndex]; // 抓目前這一題的完整資料
             console.log("你選了：", selected);
             console.log("正確答案應該是：", correct);
 
             if (selected === correct) {
                 console.log("答對囉！");
-                btn.classList.add('correct');
+                btn.classList.add('correct');  //把按鈕變成答對的樣子
                 document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
-
-                const sentenceBox = document.getElementById('sentenceBox');
+                //鎖定所有按鈕
+                const sentenceBox = document.getElementById('sentenceBox'); //把題目的空白補回去
                 sentenceBox.innerHTML = `例句： <b>${q.sentence}</b>`;
-            } else {
-                btn.classList.add('wrong');
-                btn.disabled = true;
+            } else {  //如果答錯
+                btn.classList.add('wrong'); //按鈕變成錯的樣子
+                btn.disabled = true;  //該按鈕不可以再被按了!
 
-                //錯題不重複加入，並且只在不是「錯題練習模式」時紀錄
                 if (!isWrongPractice && !wrongAnswers.some(item => item.word === correct)) {
+                    //若是"不在錯題模式"且"錯題題庫中還沒有這題"，就把這題的資料加進去
+                    //用some()檢查wrongAnswers陣列中是否已經有這一題的單字（用word來判斷）
                     wrongAnswers.push({
                         word: q.word,
                         definition: q.definition,
@@ -507,20 +234,14 @@
 
         function nextQuestion() {
             const sourceSet = isWrongPractice ? wrongAnswers : currentSet;
-
-            if (usedIndices.length >= sourceSet.length) {
+            //如果isWrongPractice(錯題模式)是true，就用wrongAnswers錯題題庫
+            //如果是false，就用currentSet一般題庫
+            currentIndex++;  //下一題
+            if (currentIndex >= currentSet.length) {
                 alert("這個單元已完成！");
-                usedIndices = [];
+                currentIndex = 0; //重製題目順序
                 return;
             }
-
-            let randomIndex;
-            do {
-                randomIndex = Math.floor(Math.random() * sourceSet.length);
-            } while (usedIndices.includes(randomIndex));
-
-            usedIndices.push(randomIndex);
-            currentIndex = randomIndex;
             showQuestion();
         }
 
@@ -531,13 +252,13 @@
             const optionsBox = document.getElementById("optionsBox");
             const sentenceBox = document.getElementById("sentenceBox");
 
-
             //清空原本題目區
             questionBox.innerHTML = "";
             optionsBox.innerHTML = "";
             sentenceBox.innerHTML = "";
             document.getElementById("nextBtn").style.display = "none";
             document.getElementById("checkWrongBtn").style.display = "none";
+            document.getElementById("restartBtn").style.display = "none";
 
             const box = document.getElementById("wrongListBox");
             if (wrongAnswers.length === 0) {
@@ -557,6 +278,8 @@
 
         function startWrongPractice() {
             document.getElementById("nextBtn").style.display = "inline-block";
+            document.getElementById("checkWrongBtn").style.display = "inline-block";
+            document.getElementById("restartBtn").style.display = "inline-block";
             document.getElementById("wrongListBox").style.display = "none";  //隱藏錯題區域
 
             if (wrongAnswers.length === 0) {
@@ -564,25 +287,41 @@
                 document.getElementById("optionsBox").innerHTML = "";
                 return;
             }
-
-            isWrongPractice = true;
-            usedIndices = [];
-            currentSet = [...wrongAnswers]; //用錯題陣列作為題庫
+            isWrongPractice = true; //啟動錯題模式
+            currentSet = shuffle([...wrongAnswers]); //用錯題陣列作為題庫
             currentIndex = 0;
             showQuestion();
         }
+
+        function restartUnit() {
+            isWrongPractice = false; //確保不是錯題模式
+            document.getElementById("nextBtn").style.display = "inline-block";
+            document.getElementById("checkWrongBtn").style.display = "inline-block";
+            document.getElementById("wrongListBox").style.display = "none";  //隱藏錯題區域
+
+            if (!currentSet || currentSet.length === 0) {
+                alert("請先選擇一個單元！");
+                return;
+            }
+            currentSet = shuffle([...currentSet]); //重新洗牌題目
+            currentIndex = 0;
+            showQuestion();
+        }
+
 
         window.onload = function () {
             document.getElementById("nextBtn").addEventListener("click", nextQuestion);
             document.getElementById("checkWrongBtn").addEventListener("click", showWrongAnswers);
         }
 
-        
+
     </script>
-    <footer style="font-size: 12px; color: gray; text-align: center; padding: 10px 0;">
-        Icons by <a href="https://icons8.com" target="_blank" style="color: gray;">Icons8</a> | © 2025 Cammy Lemon
+    <footer
+        style="background-color: #ebfcd1; color: #5b6750; font-size: 10px; padding: 5px; text-align: center; border-top: 1px solid #e1f9b7; border-radius: 0 0  8px 8px;">
+        Icons by <a href="https://icons8.com" target="_blank" style="color: #7ccf3d; text-decoration: none;">Icons8</a>
+        | © 2025 Cammy Lemon
     </footer>
-    
+
 </body>
 
 
