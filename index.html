@@ -113,15 +113,21 @@
 
     <script src="script.js"></script>
     <script>
-        const vocabulary = {}; // 全部題庫放這裡
-        function loadVocabulary(unitName) {
-            try {
-                // 這裡的 window[unitName] 是 JS 檔定義的陣列，例如 window["旅遊"] 就是旅遊題庫
-                vocabulary[unitName] = window[unitName];
-            } catch (error) {
-                console.error("讀取題庫失敗:", error);
-            }
+        async function loadVocabulary(category) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = `題庫/${category}.js`;
+                script.onload = () => {
+                     resolve();
+                };
+                script.onerror = () => {
+                    alert(`無法載入 ${category} 題庫`);
+                    reject();
+                };
+                document.head.appendChild(script);
+            });
         }
+
 
         let currentIndex = 0;
         let currentSet = [];
