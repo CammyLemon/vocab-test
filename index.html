@@ -111,18 +111,19 @@
     <br><br>
 
     <script>
+        <script src="題庫/旅遊.js"></script>
+        <script src="script.js"></script>
+
         const vocabulary = {}; // 全部題庫放這裡
-        async function loadVocabulary(unitName) {
-            try {
-                const response = await fetch(`題庫/${unitName}.json`);
-                //從總題庫中抓出某單元的檔案(fetch)
-                const data = await response.json();//把讀到的資料轉換成 JSON 格式              
-                vocabulary[unitName] = data;//成功得到這個單元的題庫資料！         
-            } catch (error) {
-                console.log("讀取題庫失敗，請確認檔案存在");
-                console.error(error);
-            }
-        }
+        function loadVocabulary(unitName) {
+    try {
+        // 這裡的 window[unitName] 是 JS 檔定義的陣列，例如 window["旅遊"] 就是旅遊題庫
+        vocabulary[unitName] = window[unitName];
+    } catch (error) {
+        console.error("讀取題庫失敗:", error);
+    }
+}
+
 
         let currentIndex = 0;
         let currentSet = [];
