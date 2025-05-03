@@ -72,13 +72,13 @@
             margin-top: 20px;
         }
 
-        button{
+        button {
             padding: 8px 16px;
             margin: 5px auto;
             border-radius: 5px;
             background-color: #ffffff;
             border: 1px solid #c0c2bf;
-            color: #414241; 
+            color: #414241;
             margin: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -109,21 +109,19 @@
     <br>
     <button id="checkWrongBtn">查看錯題</button>
     <br><br>
+    <script src="題庫/旅遊.js"></script>
 
+    <script src="script.js"></script>
     <script>
-        <script src="題庫/旅遊.js"></script>
-        <script src="script.js"></script>
-
         const vocabulary = {}; // 全部題庫放這裡
         function loadVocabulary(unitName) {
-    try {
-        // 這裡的 window[unitName] 是 JS 檔定義的陣列，例如 window["旅遊"] 就是旅遊題庫
-        vocabulary[unitName] = window[unitName];
-    } catch (error) {
-        console.error("讀取題庫失敗:", error);
-    }
-}
-
+            try {
+                // 這裡的 window[unitName] 是 JS 檔定義的陣列，例如 window["旅遊"] 就是旅遊題庫
+                vocabulary[unitName] = window[unitName];
+            } catch (error) {
+                console.error("讀取題庫失敗:", error);
+            }
+        }
 
         let currentIndex = 0;
         let currentSet = [];
