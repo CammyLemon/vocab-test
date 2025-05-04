@@ -1,4 +1,4 @@
-vocabulary["旅遊"] =  [
+vocabulary["travel"] =  [
 {
 word: "itinerary",
 Chinese: "行程",
