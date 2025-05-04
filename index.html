@@ -113,6 +113,13 @@
     <script src="題庫/travel.js"></script>
     
     <script>
+
+        const vocabulary = {};
+        let currentIndex = 0;
+        let currentSet = [];
+        let wrongAnswers = []; // 記錄錯題
+        let isWrongPractice = false;
+        
         async function loadVocabulary(category) {
             return new Promise((resolve, reject) => {
                 const script = document.createElement('script');
@@ -129,10 +136,6 @@
         }
 
 
-        let currentIndex = 0;
-        let currentSet = [];
-        let wrongAnswers = []; // 記錄錯題
-        let isWrongPractice = false;
 
         async function startCategory() {
             const selected = document.getElementById("categorySelect").value;
