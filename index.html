@@ -287,6 +287,7 @@
             if (isWrongPractice) { //錯題模式
                 if (wrongAnswers.length === 0) {
                     document.getElementById("questionBox").innerHTML = "目前沒有錯題！";
+                    document.getElementById("sentenceBox").innerHTML = "";
                     document.getElementById("optionsBox").innerHTML = "";
                     return;
                 }
@@ -295,6 +296,7 @@
             } else {  //一般模式
                 if (!selected) {
                     document.getElementById("questionBox").innerHTML = "請先選擇一個單元！";
+                    document.getElementById("sentenceBox").innerHTML = "";
                     document.getElementById("optionsBox").innerHTML = "";
                     return;
                 }
@@ -329,9 +331,11 @@
             const blankSentence = q.sentence.replace(q.word, "______"); //例句單字挖空:blankSentence
             updateProgressBar();
             document.getElementById('questionBox').innerHTML = `
-            定義： <b>${q.definition}</b><br>
-            <br>
-            <div id="sentenceBox">例句： <b>${blankSentence}</b></div><br>
+            定義： <i>${q.definition}</i>
+            `; //<b>是粗體字
+
+            document.getElementById('sentenceBox').innerHTML = `
+            題目： <b>${blankSentence}</b>
             `; //<b>是粗體字
             const optionsBox = document.getElementById('optionsBox');
             optionsBox.innerHTML = ''; //清除上一題的選項
@@ -431,6 +435,7 @@
 
             if (wrongAnswers.length === 0) {
                 document.getElementById("questionBox").innerHTML = "目前沒有錯題！";
+                document.getElementById("sentenceBox").innerHTML = "";
                 document.getElementById("optionsBox").innerHTML = "";
                 return;
             }
