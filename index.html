@@ -366,7 +366,7 @@
                 document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
                 //鎖定所有按鈕
                 const sentenceBox = document.getElementById('sentenceBox'); //把題目的空白補回去
-                sentenceBox.innerHTML = `例句： <b>${q.sentence}</b>`;
+                sentenceBox.innerHTML = `題目： <b>${q.sentence}</b>`;
                 answerBox.innerHTML = `answer： <br><b>${q.word} <br> ${q.Chinese}</b>`;
             } else {  //如果答錯
                 btn.classList.add('wrong'); //按鈕變成錯的樣子
