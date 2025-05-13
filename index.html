@@ -367,6 +367,7 @@
                 //鎖定所有按鈕
                 const sentenceBox = document.getElementById('sentenceBox'); //把題目的空白補回去
                 sentenceBox.innerHTML = `例句： <b>${q.sentence}</b>`;
+                answerBox.innerHTML = `answer： <br><b>${q.word} <br> ${q.Chinese}</b>`;
             } else {  //如果答錯
                 btn.classList.add('wrong'); //按鈕變成錯的樣子
                 btn.disabled = true;  //該按鈕不可以再被按了!
@@ -477,9 +478,9 @@
 
     </script>
     <footer
-        style="background-color: #ebfcd1; color: #5b6750; font-size: 10px; padding: 5px; text-align: center; border-top: 1px solid #e1f9b7; border-radius: 0 0  8px 8px;">
-        Icons by <a href="https://icons8.com" target="_blank" style="color: #7ccf3d; text-decoration: none;">Icons8</a>
-        | © 2025 Cammy Lemon
+        style="background-color: #ffffff; color: #5b6750; font-size: 10px; padding: 5px; text-align: center; border-top: 1px solid #e1f9b7; border-radius: 0 0  8px 8px;">
+    Icons by <a href="https://icons8.com" target="_blank" style="color: #7ccf3d; text-decoration: none;">Icons8</a>
+    | © 2025 Cammy Lemon
     </footer>
 
 
