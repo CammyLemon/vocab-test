@@ -8,39 +8,117 @@
 
     <style>
         body {
-
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            padding: 30px;
-            max-width: 600px;
-            margin: auto;
+            padding: 50px;
+            padding-top:20px;
+            max-width: 2100px;
+            margin: 20px;
+            margin-top: 10px;
         }
 
         h1 {
             font-size: 2em;
-            color: #243f35;
+            color: #3f70d1;
+            margin: 5px;
             margin-bottom: 20px;
+            white-space: nowrap;
         }
 
-        select,
-        button {
+        .main-container {
+            display: flex;
+            align-items: flex-start;
+            /* 垂直置中 */
+            justify-content: flex-start;
+            /* 整體朝左放 */
+            gap: 5px;
+            /* 元素之間間距 */
+            flex-wrap: nowrap;
+            /* 小螢幕不換行 */
+        }
+
+        .left-box,
+        .right-box {
+            padding: 10px;
+        }
+
+        .left-panel {
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+            /*直的排列*/
+            gap: 20px;
+            flex-shrink: 0;
+        }
+
+        .right-panel {
+            width: 850px;
+            width: 60%;
+            /* 固定寬度（依你版面可調） */
+            min-height: 500px;
+            /* 設一個最小高度防跳動 */
+            max-height: 500px;
+            min-width: 850px;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+            word-wrap: break-word;
+            /* 避免太長的單字撐開區塊 */
+            overflow-wrap: break-word;
+            flex-shrink: 0;
+            /* 不允許 flex 把它壓縮變窄 */
+        }
+
+        .allquestion {
+            border: 2px solid #3f70d1;
+            border-radius: 6px;
+            margin: 10px;
             padding: 8px 16px;
-            margin: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
+            min-height: 420px;
         }
 
 
         .option-btn {
-            display: block;
-            width: 200px;
+            width: 80%;
+            /* 讓按鈕寬度統一為容器寬度 */
             margin: 10px auto;
+            /* 自動置中 + 垂直間距 */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 30px;
             background-color: #ffffff;
-            border: 2px solid #3f4954;
+            border: 2px solid #3f70d1;
+            border-radius: 6px;
             color: #3b4753;
             font-weight: bold;
+            justify-content: center;
             transition: 0.3s;
+        }
+
+        #progressContainer {
+            width: 40%;
+            background-color: #e4e4e4;
+            height: 10px;
+            border-radius: 6px;
+            margin-left: 200px;
+        }
+
+        #progressBar {
+            flex-direction: row-reverse;
+            height: 10px;
+            width: 0%;
+            /* 初始值 */
+            background-color: #3f70d1;
+            border-radius: 6px;
+            transition: width 0.3s ease;
+        }
+
+        #questionCount {
+            text-align: center; 
+            margin-top: 8px;
+            display: inline-block;
+            color: #3f4954;
         }
 
         .option-btn:hover {
@@ -57,16 +135,34 @@
         }
 
         #questionBox {
-            margin-top: 30px;
-            font-size: 18px;
+            min-width: 850px;
+            min-height: 70px;
+            margin: 10px;
+            margin-left: 20px;
+            margin-right: 20px;
+            font-size: 20px;
             color: #3f4954;
-            line-height: 1.8;
+            line-height: 1.6;
         }
 
         #sentenceBox {
-            margin-top: 10px;
-            font-style: 18px;
+            min-width: 850px;
+            min-height: 70px;
+            margin: 10px;
+            margin-left: 20px;
+            margin-right: 20px;
+            font-size: 20px;
             color: #3f4954;
+            line-height: 1.6;
+        }
+
+        #answerBox {
+            min-width: 50px;
+            min-height: 70px;
+            margin-top: 5px;
+            font-size: 18px;
+            color: #3f4954;
+            line-height: 1.8;
         }
 
         #controls {
@@ -74,44 +170,87 @@
         }
 
         button {
-            padding: 8px 16px;
-            margin: 5px auto;
-            border-radius: 5px;
+            padding: 15px 16px;
+            width: 200px;
             background-color: #ffffff;
-            border: 1px solid #c0c2bf;
-            color: #414241;
-            margin: 5px;
-            border: 1px solid #ccc;
+            color: #3f4954;
+            margin: 10px;
+            border: 2px solid #3f70d1;
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
         }
+
+        select {
+            padding: 8px 16px;
+            width: 200px;
+            background-color: #ffffff;
+            color: #3f4954;
+            margin: 10px;
+            border: 2px solid #3f70d1;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .answer-box {
+            padding: 8px 16px;
+            min-width: 50px;
+            min-height: 110px;
+            margin: 10px;
+            font-size: 20px;
+            color: #3f4954;
+            line-height: 1.8;
+            border: 2px solid #3f70d1;
+            border-radius: 5px;
+        }
+        
     </style>
 
 </head>
 
 <body>
 
-    <h1>多益單字練習</h1> <!--大標-->
+    <div class="main-container">
+        <div class="left-box"> <!--左邊區塊-->
+            <h1>多益單字練習</h1> <!--大標-->
+            <div class="answer-box">
+                <div id="answerBox"></div>
+            </div>
+            <button id="nextBtn">下一題</button>
+            <br>
+            <button onclick="startWrongPractice()">開始錯題練習</button>
+            <br>
+            <button id="checkWrongBtn">查看錯題</button>
+            <br>
+            <button id="restartBtn" onclick="restartUnit()">重新開始本單元</button>
+        </div>
 
-    <label for="categorySelect">請選擇單元：</label>
-    <select id="categorySelect" onchange="startCategory()"> <!--選單元列表-->
-        <option value="">-- 請選擇 --</option>
-        <option value="travel">旅遊</option>
-        <option value="food">點餐</option>
-    </select>
-    <button onclick="startWrongPractice()">開始錯題練習</button>
-    <div id="questionBox" class="question-box"></div>
-    <div id="optionsBox"></div>
-    <div id="wrongListBox"></div>
 
-    <button id="nextBtn">下一題</button>
-    <button id="restartBtn" onclick="restartUnit()" style="display: none;">重新開始本單元</button>
-    <br>
-    <button id="checkWrongBtn">查看錯題</button>
-    <br><br>
+        <div class="right-box"> <!--右邊區塊-->
+
+            <select id="categorySelect" onchange="startCategory()"> <!--選單元列表-->
+                <option value="">請選擇單元</option>
+                <option value="travel">旅遊</option>
+                <option value="food">點餐</option>
+            </select>
+
+            <div id="progressContainer" style="display: inline-block;">
+                <div id="progressBar"></div>
+            </div>
+            <div id="questionCount">第 1 題 / 共 10 題</div>
+
+            <div class="allquestion">
+                <div id="wrongListBox" style="display: none;"></div>
+                <div id="questionBox"></div>
+                <div id="sentenceBox"></div>
+                <div id="optionsBox"></div>
+            </div>
+
+        </div>
+    </div>
     
-    
+</body>
     <script>
 
         const vocabulary = {};
@@ -188,7 +327,7 @@
             if (!currentSet.length) return;  //沒有題目的話就跳掉
             const q = currentSet[currentIndex];  //把題目存進q
             const blankSentence = q.sentence.replace(q.word, "______"); //例句單字挖空:blankSentence
-
+            updateProgressBar();
             document.getElementById('questionBox').innerHTML = `
             定義： <b>${q.definition}</b><br>
             <br>
@@ -316,6 +455,12 @@
             showQuestion();
         }
 
+        function updateProgressBar() { //更新進度條
+        const progressnow = ((currentIndex + 1) / currentSet.length) * 100;
+        document.getElementById("progressBar").style.width = progressnow + "%";
+        document.getElementById("questionCount").innerText = `第 ${currentIndex + 1} 題 / 共 ${currentSet.length} 題`;
+    }
+
 
         window.onload = function () {
             document.getElementById("nextBtn").addEventListener("click", nextQuestion);
@@ -330,7 +475,7 @@
         | © 2025 Cammy Lemon
     </footer>
 
-</body>
+
 
 
 </html>
