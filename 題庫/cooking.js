@@ -1,4 +1,4 @@
-[
+vocabulary["cooking"] = [
     {
 word: "stew",
 Chinese: "燉煮",
